@@ -1,0 +1,141 @@
+
+.main-wrap{
+  min-width: 375px;
+  /*padding: 1em;*/
+}
+
+.col2-right .main {
+  /*width: 100%;*/
+
+  margin: auto;
+}
+
+.col2-right .right{
+  width: 100%;
+  margin-top: 2em;
+}
+
+
+.col3-left .left {
+  width: 100%;
+  float: left;
+  margin-bottom: 2em;
+}
+
+
+.container{
+  width: 80%;
+  margin: auto;
+  content: "";
+  padding: 0 1em;
+  display: table;
+}
+
+
+
+.header{
+  width: 100%;
+  content: "";
+  display: table;
+}
+
+.header-top{
+  width: 100%;
+  height: 85px;
+  background-color: #7dd9e8;
+}
+
+
+
+.header-bottom{
+  width: 100%;
+  min-height: 40px;
+  background-color: #f5f5f5;
+
+}
+
+.clearfix{
+  content: "";
+  display: table;
+
+}
+
+.footer {
+  margin: auto;
+  width: 100%;
+  height: 45px;
+  line-height: 1em;
+  background-color: #737373;
+}
+
+.col3-left {
+  content: "";
+  display: table;
+  width: 100%;
+  margin: 30px auto 32px auto;
+}
+
+
+
+@media only screen and (min-width:768px) {
+
+.main-wrap{
+  min-width:746px;
+
+}
+}
+
+
+@media only screen and (min-width:1024px) {
+
+.main-wrap{
+  min-width: 1002px;
+
+}
+
+.container{
+
+  width: 938px;
+
+}
+
+.col3-left{
+  background-image: url("../images/png/col3-leftbg.png");
+
+  background-repeat: repeat-y;
+
+}
+
+
+.col3-left .left {
+  width: 194px;
+  padding-right: 2px;
+  margin-bottom: 0px;
+}
+
+.col3-left .col2-right {
+  width: 742px;
+  overflow: hidden;
+  content: "";
+  display: table;
+}
+
+.col2-right .main {
+  width: 518px;
+
+  float: left;
+  padding: 0 24px;
+}
+
+.col2-right .right {
+  width: 176px;
+  margin-top: 0;
+
+  float: right;
+}
+
+.footer{
+  font-size: 10px;
+
+}
+}
