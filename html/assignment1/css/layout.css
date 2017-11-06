@@ -1,18 +1,33 @@
 
 .main-wrap{
-  min-width: 375px;
+  max-width: 100%;
   /*padding: 1em;*/
 }
 
 .col2-right .main {
   /*width: 100%;*/
-
+  transform: scale(1.7) translateY(10em);
   margin: auto;
+  max-width: 65%;
+  display: table;
 }
+
+.main .block{
+  display: table;
+  width: 70%;
+}
+
+.main .content{
+  display: table;
+  /*margin: auto;*/
+}
+/*.col2-right .main hr{*/
+  /*transform: scale(1);*/
+/*}*/
 
 .col2-right .right{
   width: 100%;
-  margin-top: 2em;
+  margin-top: 35em;
 }
 
 
@@ -122,6 +137,8 @@
 
 .col2-right .main {
   width: 518px;
+
+    transform: scale(1);
 
   float: left;
   padding: 0 24px;

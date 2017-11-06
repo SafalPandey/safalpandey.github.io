@@ -138,7 +138,7 @@ li.subs {
   background-position: top;
   background-repeat: no-repeat;
   height: 63px;
-  width: 100%;
+  width: 70%;
 }
 
 .sub-header {
@@ -155,7 +155,8 @@ li.subs {
 
 .left .block-header, .right .block-header {
   background-color: #2fc1db;
-  line-height: 12px;
+  line-height: 2em;
+  font-size: 2em;
   text-align: left;
   padding: 15px 12px;
   color: white;
@@ -297,7 +298,7 @@ li.subs {
   width: 100%;
   content: "";
   display: table;
-  font-size: 1em;
+  font-size: 1.7em;
   font-weight: bold;
 }
 
@@ -494,6 +495,13 @@ li.friend {
 width: 100%;
     /*background-color: red;*/
   }
+
+  .left .block-header, .right .block-header {
+    font-size: 16px;
+    line-height: 12px;
+
+  }
+
 
   .search {
     float: left;
