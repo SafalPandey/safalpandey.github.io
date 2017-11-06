@@ -181,6 +181,7 @@ li.subs {
 .tabs .tab {
   width: 114px;
   margin: 0 10px;
+  float: left;
 }
 
 .tab+.tab {
