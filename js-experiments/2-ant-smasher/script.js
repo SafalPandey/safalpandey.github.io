@@ -44,12 +44,10 @@ function Ant(elementId){
 	}
 
 
-	setInterval(function(){
-		that.updatePosition();
-	},10);
 
 
 }
+
 
 
 function killAntObject(element){
@@ -92,3 +90,11 @@ for (var i = 0; i < 10; i++) {
   };
 
 }
+
+setInterval(function(){
+  allAnts.forEach(function (ant){
+
+    ant.updatePosition();
+    })
+
+},10);
