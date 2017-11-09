@@ -36,6 +36,7 @@ function Board(wrapper, parent) {
   numberInput.style.width = "100%";
   numberInput.style.height = "30px";
   numberInput.style.textAlign = "center";
+  numberInput.type = "number";
   numberInput.placeholder = "Enter Number of Ants Here";
   startGameDiv.appendChild(numberInput);
 
@@ -95,7 +96,7 @@ function Board(wrapper, parent) {
         allAnts.forEach(function(other) {
 
           if (ant == other) {
-            console.log("Self", ant);
+            // console.log("Self", ant);
 
           } else if (ant.x < other.x + 30 && ant.x + 30 > other.x && ant.y < other.y + 16 && 16 + ant.y > other.y) {
             console.log("collided");
