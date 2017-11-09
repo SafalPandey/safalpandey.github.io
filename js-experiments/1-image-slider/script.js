@@ -94,9 +94,8 @@ function previousImage(index) {
 
   }
   start= -(index)*100;
-  // console.log(start);
-  end = -(index+1)*100;
-  // console.log("current left",left);
+  console.log(start);
+  console.log("current left",left);
   if (left > 0){
     left=-left;
 
@@ -128,9 +127,17 @@ function previousImage(index) {
 
 
 function nextImage(index) {
+  if (index < 0 ) {
+    index = -index;
+    var multiple = Math.floor((index/9 )+ 1)*9;
+    index = multiple - index;
+    // console.log(index);
 
-  start=(index-1)*100;
+  }
+
   end = ((index)*100);
+  // console.log(end);
+  // console.log("current left",left);
   if (left < 0) {
     left = -left;
   }
@@ -138,13 +145,26 @@ function nextImage(index) {
     window.animateNext = setInterval(function() {
     left++;
     if (left == end) {
-      currentIndex = currentIndex % 9;
-      left = left%900;
+      if (currentIndex<0) {
+        currentIndex = -currentIndex;
+        var multiple = Math.floor((index/9 )+ 1)*9;
+        currentIndex = multiple - currentIndex;
+      }
+      else {
+        currentIndex = currentIndex%9;
+      }
+      // console.log("left and end", left , end);
+
       clearInterval(animateNext);
     }
 
+    if(left > 900){
+      left = 0;
+    }
+
+
     // console.log(left);
-    imgUL.style.left = "-" + left%900 + "%";
+    imgUL.style.left = "-" + left + "%";
   }, 10);
 };
 
