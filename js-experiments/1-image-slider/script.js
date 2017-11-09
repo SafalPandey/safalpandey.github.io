@@ -66,6 +66,17 @@ function loadImages() {
     imgUL.appendChild(imgli);
   }
 
+  var imgli = document.createElement('li')
+  var img = document.createElement('img');
+  img.style.height = '500px';
+  imgli.style.display = "inline-block";
+  imgli.style.height = '500px';
+
+  img.src = "images/" + 1 + ".jpg";
+  imgli.style.margin=' 0 10px;';
+  imgli.appendChild(img);
+  imgUL.appendChild(imgli);
+
 }
 
 
@@ -75,19 +86,43 @@ function loadImages() {
 
 
 function previousImage(index) {
+  if (index < 0 ) {
+    index = -index;
+    var multiple = Math.floor((index/9 )+ 1)*9;
+    index = multiple - index;
+    // console.log(index);
+
+  }
   start= -(index)*100;
+  // console.log(start);
   end = -(index+1)*100;
+  // console.log("current left",left);
+  if (left > 0){
+    left=-left;
 
-  i=end;
-  var animate = setInterval(function() {
+  }
+  window.animatePrev = setInterval(function() {
 
-    i++;
-    if (i >= start) {
-      clearInterval(animate);
+    left++;
+    if(left > 0){
+      left=-900;
+    }
+    if (left == start) {
+      if (currentIndex<0) {
+        currentIndex = -currentIndex;
+        var multiple = Math.floor((index/9 )+ 1)*9;
+        currentIndex = multiple - currentIndex;
+      }
+      else {
+        currentIndex = currentIndex%9;
+      }
+      // console.log(currentIndex);
+      // console.log("left and start", left , start);
+      clearInterval(animatePrev);
     }
 
-    console.log(i);
-    imgUL.style.left = i + "%";
+    // console.log(left);
+    imgUL.style.left = left + "%";
   }, 10);
 };
 
@@ -95,58 +130,71 @@ function previousImage(index) {
 function nextImage(index) {
 
   start=(index-1)*100;
-  end = (index)*100;
-
-  i=start;
-  var animate = setInterval(function() {
-
-    i++;
-    if (i >= end) {
-      clearInterval(animate);
+  end = ((index)*100);
+  if (left < 0) {
+    left = -left;
+  }
+  // left=start;
+    window.animateNext = setInterval(function() {
+    left++;
+    if (left == end) {
+      currentIndex = currentIndex % 9;
+      left = left%900;
+      clearInterval(animateNext);
     }
 
-    console.log(i);
-    imgUL.style.left = "-" + i + "%";
+    // console.log(left);
+    imgUL.style.left = "-" + left%900 + "%";
   }, 10);
 };
 
 function gotoImage(index){
 
+  left = -1 * index *100;
+  currentIndex = index;
   imgUL.style.left = "-"+ index*100 + "%";
-  console.log(  imgUL.style.left);
+  // console.log(  imgUL.style.left);
 };
 
 
 var currentIndex = 0;
-
+var left = 0;
 loadImages();
 
 previous.onclick = function(){
-  if(currentIndex == 0){
-    console.log(currentIndex);
 
-    current = 0;
-    gotoImage(0)
-  }
-  else {
 
+  // if(currentIndex <= 0){
+  //   console.log(currentIndex);
+  //
+  //   current = 0;
+  //   gotoImage(0)
+  // }
+  // else {
+  clearInterval(window.animateNext);
+
+  clearInterval(window.animatePrev);
   currentIndex -=1;
   console.log(currentIndex);
   previousImage(currentIndex);
-}
+// }
 };
 
 next.onclick =function(){
-  if(currentIndex == 8){
-    console.log(currentIndex);
+  // if(currentIndex == 9){
+  //   console.log(currentIndex);
+  //
+  //   currentIndex = 9;
+  //
+  // }
+  // else {
+    clearInterval(window.animateNext);
 
-    currentIndex = 8;
-    gotoImage(8);
-  }
-  else {
+    clearInterval(window.animatePrev);
 
   currentIndex +=1;
+  // currentIndex = currentIndex % 9;
   console.log(currentIndex);
   nextImage(currentIndex);
-}
+// }
 };
