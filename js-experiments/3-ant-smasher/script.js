@@ -2,7 +2,7 @@ var wrapper = document.getElementById("wrapper");
 var parent = document.getElementById("parent");
 
 var speed = 1;
-var MAX_BOX_BOUNDARY_X = parseInt(parent.style.width) - 30;
+var MAX_BOX_BOUNDARY_X = parseInt(parent.style.width) - 55;
 var MAX_BOX_BOUNDARY_Y = parseInt(parent.style.height) - 30;
 var MIN_BOX_BOUNDARY = 10;
 
@@ -48,7 +48,7 @@ function Board(wrapper, parent) {
   startButton.style.height = "5em";
   startButton.innerHTML = "Begin Game";
   startButton.onclick = function() {
-    console.log(parseInt(numberInput.value))
+    // console.log(parseInt(numberInput.value))
     var antNum = ((numberInput.value) == "" ? 10 : numberInput.value);
     wrapper.removeChild(startGameDiv);
     createScene(antNum);
@@ -75,13 +75,24 @@ function Board(wrapper, parent) {
   restartButton.innerHTML = "Play Again";
   restartButton.onclick = function() {
 
-    killAllAnts();
-    wrapper.removeChild(gameOver);
-    clearInterval(that.repeat);
-    that.init(wrapper, parent);
+    // if(wrapper.children[1] == gameOver){
+    //   console.log("removed gameOver");
+    //   wrapper.removeChild(gameOver);
+    // }
+
+    that.reset();
   };
   gameOver.appendChild(restartButton)
 
+
+  var resetButton = restartButton.cloneNode(true);
+
+  resetButton.innerHTML = "Reset Game";
+  resetButton.style.position = "absolute";
+  resetButton.style.bottom = "0%";
+  resetButton.onclick = function() {
+    that.reset();
+  };
 
 
   this.init = function() {
@@ -98,18 +109,29 @@ function Board(wrapper, parent) {
           if (ant == other) {
             // console.log("Self", ant);
 
-          } else if (ant.x < other.x + 30 && ant.x + 30 > other.x && ant.y < other.y + 16 && 16 + ant.y > other.y) {
+          } else if (ant.x < other.x + 55 && ant.x + 55 > other.x && ant.y < other.y + 30 && 30 + ant.y > other.y) {
             console.log("collided");
 
-            if (ant.x < other.x || ant.x > other.x) {
+            // if()
+
+            if (ant.x < other.x+55 || ant.x+55 > other.x) {
               ant.dx = -ant.dx;
-              // other.dx = -other.dx;
-            }
-            if (ant.y > other.y || ant.y < other.y) {
-              ant.dy = -ant.dy;
-              // other.dy = -other.dy;
+              other.dx = -other.dx
 
             }
+
+            if (ant.y < other.y+30 || ant.y+30 >other.y) {
+              ant.dy = -ant.dy;
+              other.dy = -other.dy
+
+            }
+
+            // if (ant.x+55 > other.x) {
+            //   other.dx = -other.dx
+            // }
+            // else if (ant.y+30 >other.y) {
+            //   other.dy = -other.dy
+            // }
             // ant.updatePosition();
 
           }
@@ -122,8 +144,8 @@ function Board(wrapper, parent) {
 
   var createScene = function(num_of_ants) {
     var children = document.createElement("div");
+    children.appendChild(resetButton);
     parent.appendChild(children);
-
 
     for (var i = 0; i < num_of_ants; i++) {
 
@@ -140,8 +162,7 @@ function Board(wrapper, parent) {
 
 
       child.appendChild(img);
-      child.style.top = ant.y + "px";
-      child.style.left = ant.x + "px";
+
 
       child.onclick = function(_ant, _i) {
         return function() {
@@ -156,9 +177,8 @@ function Board(wrapper, parent) {
           if (allAnts.length == 0) {
 
 
-            var children = parent.childNodes;
 
-            parent.removeChild(children[1]);
+            parent.removeChild(parent.children[0]);
 
             wrapper.appendChild(gameOver);
 
@@ -174,11 +194,22 @@ function Board(wrapper, parent) {
   }
 
   this.reset = function() {
+
+
     killAllAnts();
     clearInterval(that.repeat);
 
-    wrapper.removeChild(gameOver);
-    that.init(wrapper, parent);
+    if(parent.children.length != 0){
+      console.log("removing",parent.children[0]);
+      parent.removeChild(parent.children[0]);
+    }
+
+    for(i=1; i < wrapper.children.length;i++){
+      console.log("deleting",wrapper.children[i]);
+      wrapper.removeChild(wrapper.children[i]);
+    }
+
+    this.init(wrapper, parent);
 
   };
 
@@ -186,7 +217,10 @@ function Board(wrapper, parent) {
   var killAllAnts = function() {
     allAnts.forEach(function(ant) {
       ant.kill();
+
     })
+
+    allAnts = [];
   };
 };
 
@@ -202,6 +236,11 @@ function Ant(elementId) {
 
   this.dx = getRandom(-1, 1);
   this.dy = getRandom(-1, 1);
+
+  // this.dx = 3;
+  // this.dy = 3;
+
+
 
   this.updatePosition = function() {
     this.x = this.x + this.dx;
