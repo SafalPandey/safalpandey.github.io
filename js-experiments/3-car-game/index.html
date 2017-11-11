@@ -1,37 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Car Game</title>
-  </head>
-  <style media="screen">
-    #road{
+
+<head>
+  <meta charset="utf-8">
+  <title>Car Game</title>
+</head>
+<style media="screen">
+  /*.road{
       height: 650px;
       width: 500px;
       background-image: url("images/2d-road.png");
       position: relative;
 
       background-repeat: repeat-y;
-      margin: auto;
-    }
-    #car{
+      display: inline-block;
+      /*margin: auto;*/
+
+  /*}*/
+
+  /*.car{
       height: 80px;
       width: 50px;
       position: absolute;
       left: 60px;
       bottom: 10%;
       background-image: url("images/car-top.png");
-    }
-  </style>
-  <body>
+    }*/
 
-    <div id="road" style=" ">
-      <div id="car" >
+#wrapper{
+  position: relative;
+  display: table;
+  margin: auto;
+  }
+/*
+    #road2{
+      transform: rotate(180deg);
+    }*/
 
-      </div>
+</style>
+
+<body>
+  <div id="wrapper">
+
+  <div id="road1" class="road">
+    <div id="car1" class="car">
+
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <!-- <div id="road2" class="road">
+    <div id="car2" class="car">
 
-  </body>
+    </div>
+  </div> -->
+</div>
+  <script src="script.js"></script>
+
+</body>
+
 </html>

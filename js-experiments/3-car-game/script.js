@@ -1,108 +1,241 @@
-function Car(element){
-	this.element= element;
-	this.parent = document.getElementById("road");
+function Car(car, road) {
+  this.element = car;
+  this.parent = road;
   this.element.style.width = "50px";
+  this.x = 100;
+  this.y = 6;
+  this.by = 0;
+  this.dy = 6;
 
-	this.x=100;
-	this.y=0;
-	this.dy=6;
+  this.updatePosition = function() {
+    this.by = this.by + this.dy;
+    this.parent.style.backgroundPosition = "center " + this.by + "px";
+    this.element.style.left = this.x + "px";
+    this.element.style.bottom = this.y + "%";
 
-	this.updatePosition=function(){
-		this.y=this.y+this.dy;
-		this.parent.style.backgroundPosition="center "+this.y+"px";
-		this.element.style.left=this.x+"px";
+    // if(this.x >= parseInt(this.parent.style.getPropertyValue("width"))-20){
+    // 	this.dx=-10;
+    // }
 
-		// if(this.x >= parseInt(this.parent.style.getPropertyValue("width"))-20){
-		// 	this.dx=-10;
-		// }
-
-		if(this.x < 10){
-			this.dx=10;
-		}
-
-
-		//
-		// this.resetX();
-		// this.resetY();
-	}
-
-	this.resetX = function(){
-		this.dx = 0;
-	};
-	this.resetY = function(){
-		this.dy=0;
-	};
-
-	this.moveLeft = function(){
-		this.x -= 125;
-    if(this.x<100){
-      this.x=100;
+    if (this.x < 10) {
+      this.dx = 10;
     }
-		// this.resetY();
 
-	}
-	this.moveRight = function(){
+
+    //
+    // this.resetX();
+    // this.resetY();
+  }
+
+  this.resetX = function() {
+    this.dx = 0;
+  };
+  this.resetY = function() {
+    this.dy = 0;
+  };
+
+  this.moveLeft = function() {
+    this.x -= 125;
+    if (this.x < 100) {
+      this.x = 100;
+    }
+    // this.resetY();
+
+  }
+  this.moveRight = function() {
     this.x += 125;
-    if(this.x>350){
-      this.x=350;
+    if (this.x > 350) {
+      this.x = 350;
     }
 
-		// this.resetY();
+    // this.resetY();
 
-	}
-	this.moveUp = function(){
-		this.dy +=2;
-    if(this.dy >= 10){
+  }
+  this.moveUp = function() {
+    this.y = 7;
+    this.dy += 2;
+    if (this.dy >= 10) {
       this.dy = 10;
       // console.log("max speed!!!");
     }
-		this.resetX();
+    this.resetX();
 
 
-	}
-	this.moveDown = function(){
-		this.dy -=2;
-    if(this.dy<=2){
-      this.dy=2;
+  }
+  this.moveDown = function() {
+    this.y = 5;
+    this.dy -= 2;
+    if (this.dy <= 2) {
+      this.dy = 2;
     }
-		this.resetX();
+    this.resetX();
 
-	}
+  }
 }
 
-function Obstacle(){
+
+function Bullet() {
+  this.y = -10;
+  var that = this;
+
+  this.element = document.createElement("div");
+  this.element.style.height = "20px";
+  this.element.style.width = "6px";
+  this.element.style.position = "absolute";
+  this.element.style.top = this.y + "px";
+  this.element.style.left = "22px";
+
+  this.element.style.backgroundColor = "red";
+
+
+
+  this.updatePosition = function() {
+    console.log(that.y);
+    this.element.style.top = that.y + "px";
+  }
+
+  // this.destroy = function() {
+  //     this
+  // }
+
+}
+
+
+function Obstacle() {
 
 };
 
-var carDiv =document.getElementById("car");
+function carGame(carId, roadId) {
+
+  var that = this;
+  this.bullets = [];
+  var startGameDiv = document.createElement("div");
+
+  startGameDiv.style.position = "fixed";
+  startGameDiv.style.left = "0";
+  startGameDiv.style.top = "0";
+  startGameDiv.style.width = "100%";
+  startGameDiv.style.height = "100vh";
+  startGameDiv.innerHTML = "Welcome to Ant-Smasher!!!<br/>";
+  startGameDiv.style.backgroundColor = "yellow";
+  startGameDiv.style.fontSize = "5em";
+  startGameDiv.style.textAlign = "center";
 
 
-var car=new Car(carDiv);
-setInterval(function(){
-	car.updatePosition();
-	// console.log(box.x);
-},10);
+  var roadElement = document.getElementById(roadId);
+  roadElement.style.height = "650px";
+  roadElement.style.width = "500px";
+  roadElement.style.backgroundImage = "url('images/2d-road.png')";
+  roadElement.style.position = "relative";
+  roadElement.style.backgroundRepeat = " repeat-y";
+  roadElement.style.display = "inline-block";
+
+  var carElement = document.getElementById(carId);
+  carElement.style.height = "80px";
+  carElement.style.width = "50px";
+  carElement.style.position = "absolute";
+  carElement.style.bottom = "7%";
+  carElement.style.left = "60px";
+  carElement.style.backgroundImage = " url('images/car-top.png')";
 
 
-// console.log(parseInt(car.parent.style.getPropertyValue("width")))
+  this.car = new Car(carElement, roadElement);
+
+  this.init = function() {
+
+    setInterval(function() {
+      that.car.updatePosition();
+      // console.log(box.x);
+      that.bullets.forEach(function(bullet) {
+        bullet.y -= 10;
+        bullet.updatePosition();
+        if (bullet.y <= -550) {
+          console.log(that.bullets.indexOf(bullet));
+          that.car.element.removeChild(bullet.element);
+          that.bullets.splice(that.bullets.indexOf(bullet), 1);
+          // clearInterval(bullRepeat);
+        }
+      })
+    }, 10);
+
+  };
+
+  this.reset = function() {
+    // cars = [];
+
+  };
+
+
+};
+
+var carGames = [];
+
+var wrapper = document.getElementById("wrapper");
+
+
+var resetButton = document.createElement("button");
+resetButton.style.border = "none";
+resetButton.style.width = "70px";
+resetButton.style.height = "3em";
+resetButton.style.backgroundColor = "yellow";
+resetButton.innerHTML = "<strong>Reset Game</strong>";
+resetButton.style.position = "absolute";
+resetButton.style.left = "0";
+
+resetButton.onclick = function() {
+  // console.log(parseInt(numberInput.value))
+  wrapper.removeChild();
+  createScene(antNum);
+};
+
+
+wrapper.appendChild(resetButton);
+
+
+var game1 = new carGame("car1", "road1");
+game1.init();
+
+carGames.push(game1);
+//
+// var game2 = new carGame("car2","road2");
+// game2.init();
+// game2
+// carGames.push(game2);
 
 
 document.onkeydown = function(event) {
-		if(event.keyCode == 39){
+
+  carGames.forEach(function(carGame) {
+
+    if (event.keyCode == 39) {
       // console.log("pressed right");
-			car.moveRight();
-		}
-		if(event.keyCode == 40){
+      carGame.car.moveRight();
+    }
+    if (event.keyCode == 40) {
       // console.log("pressed down ");
-			car.moveDown();
-		}
-		if(event.keyCode == 37){
+      carGame.car.moveDown();
+    }
+    if (event.keyCode == 37) {
       // console.log("pressed left" );
-			car.moveLeft();
-		}
-		if(event.keyCode == 38){
-			// box.dy = -10;
+      carGame.car.moveLeft();
+    }
+    if (event.keyCode == 38) {
+      // box.dy = -10;
       // console.log("pressed up" );
-			car.moveUp();
-		}
+      carGame.car.moveUp();
+    }
+
+    if (event.keyCode == 32) {
+      var bullet = new Bullet();
+      carGame.bullets.push(bullet);
+      console.log(carGame.bullets)
+
+      carGame.car.element.appendChild(bullet.element);
+
+      // box.dy = -10;
+      // console.log("pressed up" )
+    }
+  })
 };
+
+// console.log(parseInt(car.parent.style.getPropertyValue("width")))
