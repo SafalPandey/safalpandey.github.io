@@ -1,6 +1,6 @@
 var parent = document.getElementById("parent");
 
-
+parent.style.listStyle = "none";
 
 var getRandom = function(min, max) {
   return Math.random() * (max - min + 1) + min;
@@ -22,7 +22,7 @@ function Box(elementId) {
 
 
 for (var i = 0; i < 10; i++) {
-  var child = document.createElement("div");
+  var child = document.createElement("li");
   child.className = "child";
   parent.appendChild(child);
   child.setAttribute("id", "child" + i);
@@ -38,7 +38,7 @@ for (var i = 0; i < 10; i++) {
     return function() {
       console.log(222, _box);
       box = _box;
-      this.style.backgroundColor = "red";
+      parent.removeChild(this);
       this.onclick = "";
       wrapper.appendChild(box.infoElement)
     }
