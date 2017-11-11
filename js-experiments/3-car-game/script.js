@@ -2,7 +2,7 @@ function Car(car, road) {
   this.element = car;
   this.parent = road;
   this.element.style.width = "50px";
-  this.x = 100;
+  this.x = 225;
   this.y = 6;
   this.by = 0;
   this.dy = 6;
@@ -109,6 +109,8 @@ function carGame(carId, roadId) {
 
   var that = this;
   this.bullets = [];
+
+
   var startGameDiv = document.createElement("div");
 
   startGameDiv.style.position = "fixed";
@@ -116,13 +118,14 @@ function carGame(carId, roadId) {
   startGameDiv.style.top = "0";
   startGameDiv.style.width = "100%";
   startGameDiv.style.height = "100vh";
-  startGameDiv.innerHTML = "Welcome to Ant-Smasher!!!<br/>";
+  startGameDiv.innerHTML = "Welcome to Car Game!!!<br/>";
   startGameDiv.style.backgroundColor = "yellow";
   startGameDiv.style.fontSize = "5em";
   startGameDiv.style.textAlign = "center";
 
 
-  var roadElement = document.getElementById(roadId);
+
+  var roadElement = document.createElement('div');
   roadElement.style.height = "650px";
   roadElement.style.width = "500px";
   roadElement.style.backgroundImage = "url('images/2d-road.png')";
@@ -130,7 +133,7 @@ function carGame(carId, roadId) {
   roadElement.style.backgroundRepeat = " repeat-y";
   roadElement.style.display = "inline-block";
 
-  var carElement = document.getElementById(carId);
+  var carElement = document.createElement('div');
   carElement.style.height = "80px";
   carElement.style.width = "50px";
   carElement.style.position = "absolute";
@@ -138,12 +141,41 @@ function carGame(carId, roadId) {
   carElement.style.left = "60px";
   carElement.style.backgroundImage = " url('images/car-top.png')";
 
+  roadElement.appendChild(carElement);
 
-  this.car = new Car(carElement, roadElement);
+  var resetButton = document.createElement("button");
+  resetButton.style.border = "none";
+  resetButton.style.width = "70px";
+  resetButton.style.height = "3em";
+  resetButton.style.backgroundColor = "yellow";
+  resetButton.innerHTML = "<strong>Reset Game</strong>";
+  resetButton.style.position = "absolute";
+  resetButton.style.left = "0";
+
+  resetButton.onclick = function(_that) {
+    return function(){
+
+      var game = _that;
+
+      game.reset();
+      game.init();
+
+    };
+    // console.log(parseInt(numberInput.value))
+    // wrapper.removeChild();
+    // createScene(antNum);
+  }(that);
+
+  roadElement.appendChild(resetButton);
+
+
+
 
   this.init = function() {
 
-    setInterval(function() {
+    this.car = new Car(carElement, roadElement);
+    wrapper.appendChild(roadElement);
+    this.interval = setInterval(function() {
       that.car.updatePosition();
       // console.log(box.x);
       that.bullets.forEach(function(bullet) {
@@ -162,6 +194,10 @@ function carGame(carId, roadId) {
 
   this.reset = function() {
     // cars = [];
+    this.car = null;
+    clearInterval(this.interval);
+    console.log('aa');
+    wrapper.removeChild(roadElement);
 
   };
 
@@ -173,23 +209,8 @@ var carGames = [];
 var wrapper = document.getElementById("wrapper");
 
 
-var resetButton = document.createElement("button");
-resetButton.style.border = "none";
-resetButton.style.width = "70px";
-resetButton.style.height = "3em";
-resetButton.style.backgroundColor = "yellow";
-resetButton.innerHTML = "<strong>Reset Game</strong>";
-resetButton.style.position = "absolute";
-resetButton.style.left = "0";
-
-resetButton.onclick = function() {
-  // console.log(parseInt(numberInput.value))
-  wrapper.removeChild();
-  createScene(antNum);
-};
 
 
-wrapper.appendChild(resetButton);
 
 
 var game1 = new carGame("car1", "road1");
