@@ -1,0 +1,16 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  font-family: "Open Sans";
+
+  /*color: #7f8c8c;*/
+}
+
+ul{
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
