@@ -17,33 +17,48 @@ class Game {
     canvas.style.margin = 'auto';
     canvas.style.border = '#000 1px solid';
     this.ctx = canvas.getContext('2d');
-    this.ctx.font = "30px Arial";
+    this.ctx.font = "bold 45px Arial";
+    this.ctx.fillStyle = "#fff";
+    this.ctx.strokeStyle = "#000"
     this.bgX = 0;
-    this.dxBg = 5;
+    this.dxBg = 1;
     this.bgimg = new Image();
     this.bgimg.style.width = CANVAS_WIDTH+'px';
     this.bgimg.style.height = '500px';
     this.bgimg.src = 'images/background.png';
-    // console.log(this.bgimg);
+
+    let startButton = new Image();
+    startButton.src = "images/start.png";
+
+    startButton.onclick = () => {
+      this.reset();
+      this.init();
+    }
+
+    startButton.onload = () =>{
+
+      this.ctx.drawImage(startButton,CANVAS_WIDTH/2,CANVAS_HEIGHT/2,300,250)
+    }
+
     this.bgimg.onload = () => {
       // this.bgimg.src = '';
 
       this.ctx.clearRect(0, 0, canvas.height, canvas.width);
       this.ctx.drawImage(this.bgimg, this.bgX, 0, this.bgimg.width, this.bgimg.height);
+      this.ctx.drawImage(startButton,230,150,200,112.5);
+      this.ctx.fillText("Press Space To Begin...",100,108)
+      this.ctx.strokeText("Press Space To Begin...",100,108)
+
+
       // console.log(this.bgimg);
 
     }
     this.isStarted = false;
+    this.bestScore = 0;
 
-    this.resetButton = document.createElement('button');
-    this.resetButton.style.border = 'none';
-    this.resetButton.style.width = '70px';
-    this.resetButton.style.height = '3em';
-    this.resetButton.style.backgroundColor = 'yellow';
-    this.resetButton.innerHTML = '<strong>Reset Game</strong>';
-    // this.resetButton.style.position = 'absolute';
-    this.resetButton.style.left = '0';
-    this.resetButton.style.borderRadius = '10px';
+    this.resetButton = new Image();
+    this.resetButton.src = "images/restart.png";
+
 
     this.resetButton.onclick = () => {
 
@@ -54,66 +69,10 @@ class Game {
 
     }
 
-    this.startGameDiv = document.createElement('div');
-    this.startGameDiv.style.position = 'fixed';
-    this.startGameDiv.style.left = '0';
-    this.startGameDiv.style.top = '0';
-    this.startGameDiv.style.width = '50%';
-    this.startGameDiv.style.minWidth = '500px';
-    // this.startGameDiv.style.height = '50vh';
-    this.startGameDiv.style.left = '25%';
-    this.startGameDiv.style.top = '20vh'
-    this.startGameDiv.style.margin = 'auto';
-    this.startGameDiv.style.padding = '0.5em 0';
-    this.startGameDiv.innerHTML = 'Welcome to Flappy Bird!<br />';
-    this.startGameDiv.style.backgroundColor = 'blue';
-    this.startGameDiv.style.fontSize = '4.5em';
-    this.startGameDiv.style.textAlign = 'center';
-    this.startGameDiv.style.borderRadius = '15px';
 
-    let startButton = this.resetButton.cloneNode(true);
-    startButton.innerHTML = 'Begin Game';
-    startButton.style.left = '45%';
-    startButton.style.top = '50%';
-    startButton.style.backgroundColor = 'green';
-    startButton.style.fontSize = '20px';
-    startButton.style.width = '100px';
+    this.gameOverImage = new Image();
+    this.gameOverImage.src = 'images/score.png';
 
-    startButton.onclick = () => {
-      this.reset();
-      this.init();
-    }
-
-
-    this.startGameDiv.appendChild(startButton);
-
-    wrapper.appendChild(this.startGameDiv);
-
-    this.gameOver = document.createElement('div');
-    this.gameOver.style.position = 'fixed';
-    this.gameOver.style.left = '0';
-    this.gameOver.style.top = '0';
-    this.gameOver.style.width = '80%';
-    this.gameOver.style.minWidth = '500px';
-    this.gameOver.style.height = '50vh';
-    this.gameOver.style.left = '10%';
-    this.gameOver.style.top = '20vh'
-    this.gameOver.innerHTML = 'Oops!<br /> GAME OVER!!!<br/>';
-    this.gameOver.style.backgroundColor = 'yellow';
-    this.gameOver.style.fontSize = '4.5em';
-    this.gameOver.style.textAlign = 'center';
-    this.gameOver.style.borderRadius = '15px';
-
-    let restartButton = startButton.cloneNode(true);
-    restartButton.innerHTML = 'Restart Game';
-    restartButton.onclick = () => {
-      this.reset();
-      this.init();
-    }
-
-    this.gameOver.appendChild(restartButton);
-
-    //
     this.obstacles = [];
   }
 
@@ -128,11 +87,10 @@ class Game {
 
     this.drawLoop = setInterval(() => {
       this.draw();
-      if (loopCounter % 50 === 0) {
 
+      if (loopCounter % 200 === 0) {
         let obstacle = new Obstacle(this.ctx, this.dxBg);
         this.obstacles.push(obstacle);
-
       }
 
       if (this.bird.y >= 370) {
@@ -140,7 +98,7 @@ class Game {
         this.over();
       }
       loopCounter++;
-    }, 25);
+    }, 10);
 
   }
 
@@ -157,7 +115,9 @@ class Game {
         obstacle.isCrossed = true;
       }
     })
-    this.ctx.fillText(this.score,30,30);
+    this.ctx.strokeText(this.score,15,40)
+
+    this.ctx.fillText(this.score,15,40);
     if (this.obstacles.length > 0 && this.obstacles[0].x < -70) this.obstacles.splice(0, 1);
     // console.log(this.obstacles);
   }
@@ -184,9 +144,18 @@ class Game {
   }
   over() {
     this.isStarted = false;
-    // console.log();
-    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: ' + this.score;
-    wrapper.appendChild(this.gameOver)
+    clearInterval(this.drawLoop);
+     this.ctx.drawImage(this.gameOverImage,250,125,this.gameOverImage.width,this.gameOverImage.height);
+     this.ctx.fillText(this.score,325,230);
+
+     this.ctx.strokeText(this.score,325,230)
+     if(this.bestScore < this.score) this.bestScore = this.score;
+     this.ctx.fillText(this.bestScore,325,320);
+     this.ctx.strokeText(this.bestScore,325,320)
+     this.ctx.fillText("Press Space To Restart...",100,400)
+
+     this.ctx.strokeText("Press Space To Restart...",100,400)
+
   }
   reset() {
     this.bird = null;
@@ -194,9 +163,7 @@ class Game {
     clearInterval(this.drawLoop);
 
     this.obstacles = [];
-    wrapper.children[1] == this.startGameDiv && wrapper.removeChild(this.startGameDiv);
     wrapper.children[1] == this.resetButton && wrapper.removeChild(this.resetButton);
-    wrapper.children[1] == this.gameOver && wrapper.removeChild(this.gameOver);
   }
 }
 
@@ -204,7 +171,7 @@ class Bird {
   constructor(ctx) {
     this.x = ctx.canvas.width / 2 - 200;
     this.y = 200;
-    this.dy = 1;
+    this.dy = 0.5;
     this.img = new Image();
     this.img.src = 'images/bird.png';
     this.img.style.width = '40px';
@@ -228,7 +195,7 @@ class Bird {
     // this.img.src = 'images/birdUp.png';
     // this.img.onload = () => {
     this.y -= 30;
-    this.dy = 2;
+    this.dy = 0.5;
     // }
   }
 
@@ -258,7 +225,6 @@ class Obstacle {
 
   updatePosition() {
     this.x -= this.dx;
-    // if(this.x < 125) this.isCrossed = true;
   }
 }
 
@@ -266,14 +232,9 @@ document.onkeydown = function(event) {
     switch (event.keyCode) {
       case KEY_CODES.SPACE:
       if (game.isStarted) {
-        game.drawBackground();
+        // game.drawBackground();
         game.bird.moveUp();
-        game.bird.drawBird();
-        game.obstacles.forEach(function(obstacle) {
-          obstacle.updatePosition();
-          obstacle.drawObstacle();
-        })
-        game.ctx.fillText(game.score,30,30)
+
         break;
     }
     else {
