@@ -35,10 +35,7 @@ class Game {
       this.init();
     }
 
-    startButton.onload = () =>{
 
-      this.ctx.drawImage(startButton,CANVAS_WIDTH/2,CANVAS_HEIGHT/2,300,250)
-    }
 
     this.bgimg.onload = () => {
       // this.bgimg.src = '';
