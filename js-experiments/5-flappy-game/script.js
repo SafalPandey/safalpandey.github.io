@@ -243,7 +243,7 @@ class Obstacle {
     this.isisCrossed = false;
     this.img.onload = () => {
 
-      this.y = getRandom(-180, 0);
+      this.y = getRandom(-180, -10);
 
       this.x = 700;
       this.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
