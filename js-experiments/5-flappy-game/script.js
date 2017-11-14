@@ -263,9 +263,9 @@ class Obstacle {
 }
 
 document.onkeydown = function(event) {
-  if (game.isStarted) {
     switch (event.keyCode) {
       case KEY_CODES.SPACE:
+      if (game.isStarted) {
         game.drawBackground();
         game.bird.moveUp();
         game.bird.drawBird();
@@ -276,6 +276,11 @@ document.onkeydown = function(event) {
         game.ctx.fillText(game.score,30,30)
         break;
     }
+    else {
+        game.reset();
+        game.init();
+    }
+
   }
 };
 
