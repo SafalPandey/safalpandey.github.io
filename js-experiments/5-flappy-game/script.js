@@ -179,7 +179,7 @@ class Game {
   over() {
     this.isStarted = false;
     // console.log();
-    this.gameOver.innerHTML = "<br/>Your Score: "+Math.round(this.score/39);
+    this.gameOver.innerHTML = "Game Over!<br/>Your Score: "+Math.round(this.score/39);
     wrapper.appendChild(this.gameOver)
   }
   reset() {
