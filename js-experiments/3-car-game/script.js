@@ -133,7 +133,7 @@ function Obstacle() {
 
 };
 
-function carGame(carId, roadId) {
+function CarGame(carId, roadId) {
 
   this.isStarted = false;
   var that = this;
@@ -208,15 +208,15 @@ function carGame(carId, roadId) {
 
   var restartButton = startButton.cloneNode(true);
   restartButton.innerHTML = 'Restart Game';
-  restartButton.onclick =  function(_that) {
-     return function() {
+  restartButton.onclick = function(_that) {
+    return function() {
 
-       var game = _that;
+      var game = _that;
 
-       game.reset();
-       game.init();
-     };
-   }(that);
+      game.reset();
+      game.init();
+    };
+  }(that);
 
   gameOver.appendChild(restartButton);
 
@@ -237,6 +237,7 @@ function carGame(carId, roadId) {
   this.init = function() {
     this.isStarted = true;
     this.bullets = [];
+    this.shootDelay = false;
     this.obstacles = [];
     this.car = new Car(roadElement);
     roadElement.appendChild(this.car.element);
@@ -253,38 +254,37 @@ function carGame(carId, roadId) {
         if (bullet.y <= -6) {
           that.element.removeChild(bullet.element);
           that.bullets.splice(that.bullets.indexOf(bullet), 1);
-        }else {
+        } else {
 
           checkBulletCollision(bullet);
         }
       })
 
+
       that.obstacles.forEach(function(obstacle) {
         obstacle.y += that.car.dy;
         obstacle.updatePosition();
-        if(obstacle.y > 465 && obstacle.x < that.car.x &&obstacle.x+80 > that.car.x ){
+        if (obstacle.y > 465 && obstacle.x < that.car.x && obstacle.x + 80 > that.car.x) {
 
-          if(obstacle.image == 3){
+          if (obstacle.image == 3) {
             console.log("Powered Up!!!");
             that.car.moveUp();
 
+          } else {
+
+            console.log('carllided');
+            // that.car.element.style.width = '80px';
+            obstacle.img.src = 'images/explosionCar.png';
+            that.element.removeChild(that.car.element);
+
+            // that.car.element.style.backgroundImage= 'url('images/explosionCar.png')';
+            clearInterval(that.interval);
+            clearInterval(that.obstacleInterval);
+            setTimeout(function() {
+              wrapper.appendChild(gameOver)
+              that.isStarted = false;
+            })
           }
-
-          else {
-
-          console.log('carllided');
-          // that.car.element.style.width = '80px';
-          obstacle.img.src = 'images/explosionCar.png';
-          that.element.removeChild(that.car.element);
-
-          // that.car.element.style.backgroundImage= 'url('images/explosionCar.png')';
-          clearInterval(that.interval);
-          clearInterval(that.obstacleInterval);
-          setTimeout(function(){
-            wrapper.appendChild(gameOver)
-            that.isStarted = false;
-          })
-        }
 
         }
         if (obstacle.y >= 580) {
@@ -295,7 +295,7 @@ function carGame(carId, roadId) {
     }, 10);
 
     this.obstacleInterval = setInterval(function() {
-
+      that.shootDelay = false;
       var numberOfObstacles = getRandom(1, 2);
       var lastX = 0;
       for (i = 0; i < numberOfObstacles; i++) {
@@ -318,10 +318,10 @@ function carGame(carId, roadId) {
     clearInterval(this.interval);
     clearInterval(this.obstacleInterval);
 
-    while(roadElement.childNodes[0]){
+    while (roadElement.childNodes[0]) {
       roadElement.removeChild(roadElement.childNodes[0]);
     }
-    while(wrapper.childNodes[0]){
+    while (wrapper.childNodes[0]) {
       wrapper.removeChild(wrapper.childNodes[0]);
     }
 
@@ -357,7 +357,7 @@ var carGames = [];
 
 var wrapper = document.getElementById('wrapper');
 
-var game1 = new carGame('car1', 'road1');
+var game1 = new CarGame('car1', 'road1');
 carGames.push(game1);
 
 document.onkeydown = function(event) {
@@ -383,11 +383,12 @@ document.onkeydown = function(event) {
 
           break;
         case 32:
-          var bullet = new Bullet(carGame.car.x, carGame.car.y);
-
-          carGame.bullets.push(bullet);
-          carGame.element.appendChild(bullet.element);
-
+          if (!carGame.shootDelay) {
+            var bullet = new Bullet(carGame.car.x, carGame.car.y);
+            carGame.shootDelay = true;
+            carGame.bullets.push(bullet);
+            carGame.element.appendChild(bullet.element);
+          }
           break;
 
       }
