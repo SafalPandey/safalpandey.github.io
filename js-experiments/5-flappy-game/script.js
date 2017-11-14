@@ -17,6 +17,7 @@ class Game {
     canvas.style.margin = 'auto';
     canvas.style.border = '#000 1px solid';
     this.ctx = canvas.getContext('2d');
+    this.ctx.font = "30px Arial";
     this.bgX = 0;
     this.dxBg = 5;
     this.bgimg = new Image();
@@ -145,7 +146,6 @@ class Game {
 
   draw() {
     this.drawBackground();
-    this.ctx.fillText(this.score,0,0);
     this.bird.moveDown();
     this.bird.drawBird(this.ctx);
     this.obstacles.forEach((obstacle) => {
@@ -154,9 +154,10 @@ class Game {
       obstacle.drawObstacle();
       if (obstacle.x < 125 && !obstacle.isCrossed) {
         this.score += 1;
-        obstacle.isCrossed = false;
+        obstacle.isCrossed = true;
       }
     })
+    this.ctx.fillText(this.score,30,30);
     if (this.obstacles.length > 0 && this.obstacles[0].x < -70) this.obstacles.splice(0, 1);
     // console.log(this.obstacles);
   }
@@ -184,7 +185,7 @@ class Game {
   over() {
     this.isStarted = false;
     // console.log();
-    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: ' + Math.round(this.score / 39);
+    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: ' + this.score;
     wrapper.appendChild(this.gameOver)
   }
   reset() {
@@ -243,7 +244,7 @@ class Obstacle {
     this.img.src = 'images/obstacle.png';
     this.dx = dx;
     this.ctx = ctx;
-    this.isisCrossed = false;
+    this.isCrossed = false;
     this.img.onload = () => {
       this.y = utils.getRandom(-180, -10);
       this.x = 700;
@@ -261,10 +262,6 @@ class Obstacle {
   }
 }
 
-
-
-
-
 document.onkeydown = function(event) {
   if (game.isStarted) {
     switch (event.keyCode) {
@@ -276,6 +273,7 @@ document.onkeydown = function(event) {
           obstacle.updatePosition();
           obstacle.drawObstacle();
         })
+        game.ctx.fillText(game.score,30,30)
         break;
     }
   }
