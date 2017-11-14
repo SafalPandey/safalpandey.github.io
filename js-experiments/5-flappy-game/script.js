@@ -222,7 +222,7 @@ class Bird {
   moveUp() {
     // this.img.src = "images/birdUp.png";
     // this.img.onload = () => {
-    this.y -= 25;
+    this.y -= 30;
     this.dy = 2;
     // }
   }
