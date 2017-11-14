@@ -267,7 +267,7 @@ function CarGame(carId, roadId) {
         if (obstacle.y > 465 && obstacle.x < that.car.x && obstacle.x + 80 > that.car.x) {
 
           if (obstacle.image == 3) {
-            console.log("Powered Up!!!");
+            console.log('Powered Up!!!');
             that.car.moveUp();
 
           } else {

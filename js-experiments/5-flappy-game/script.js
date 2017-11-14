@@ -2,24 +2,24 @@ let getRandom = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-let wrapper = document.getElementById("wrapper");
+let wrapper = document.getElementById('wrapper');
 
 
 class Game {
   constructor(myCanvasId) {
     let canvas = document.getElementById(myCanvasId);
-    canvas.style.margin = "auto";
-    canvas.style.border = "#000 1px solid";
-    this.ctx = canvas.getContext("2d");
+    canvas.style.margin = 'auto';
+    canvas.style.border = '#000 1px solid';
+    this.ctx = canvas.getContext('2d');
     this.bgX = 0;
     this.dxBg = 5;
     this.bgimg = new Image();
-    this.bgimg.style.width = "650px";
-    this.bgimg.style.height = "500px";
-    this.bgimg.src = "images/background.png";
+    this.bgimg.style.width = '650px';
+    this.bgimg.style.height = '500px';
+    this.bgimg.src = 'images/background.png';
     // console.log(this.bgimg);
     this.bgimg.onload = () => {
-      // this.bgimg.src = "";
+      // this.bgimg.src = '';
 
       this.ctx.clearRect(0, 0, canvas.height, canvas.width);
       this.ctx.drawImage(this.bgimg, this.bgX, 0, this.bgimg.width, this.bgimg.height);
@@ -57,7 +57,7 @@ class Game {
     this.startGameDiv.style.left = '25%';
     this.startGameDiv.style.top = '20vh'
     this.startGameDiv.style.margin = 'auto';
-    this.startGameDiv.style.padding = "0.5em 0";
+    this.startGameDiv.style.padding = '0.5em 0';
     this.startGameDiv.innerHTML = 'Welcome to Flappy Bird!<br />';
     this.startGameDiv.style.backgroundColor = 'blue';
     this.startGameDiv.style.fontSize = '4.5em';
@@ -160,7 +160,7 @@ class Game {
 
   checkCollision(obstacle) {
     if (this.bird.x + this.bird.img.width > obstacle.x && this.bird.y < obstacle.y + 294 && this.bird.x < obstacle.x + 66 || this.bird.x + this.bird.img.width > obstacle.x && this.bird.y + this.bird.img.height > obstacle.y + 416 && this.bird.x < obstacle.x + 66) {
-      console.log("over");
+      console.log('over');
       clearInterval(this.drawLoop);
 
       this.over();
@@ -179,7 +179,7 @@ class Game {
   over() {
     this.isStarted = false;
     // console.log();
-    this.gameOver.innerHTML = "Game Over!<br/>Your Score: "+Math.round(this.score/39);
+    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: '+Math.round(this.score/39);
     wrapper.appendChild(this.gameOver)
   }
   reset() {
@@ -201,9 +201,9 @@ class Bird {
     this.y = 200;
     this.dy = 1;
     this.img = new Image();
-    this.img.src = "images/bird.png";
-    this.img.style.width = "40px";
-    this.img.style.height = "30px";
+    this.img.src = 'images/bird.png';
+    this.img.style.width = '40px';
+    this.img.style.height = '30px';
     this.img.onload = () => {
       ctx.clearRect(0, 0, ctx.canvas.height, ctx.canvas.width);
       // console.log(this.img);
@@ -212,7 +212,7 @@ class Bird {
     this.ctx = ctx;
   }
   moveDown() {
-    // this.img.src = "images/birdDown.png";
+    // this.img.src = 'images/birdDown.png';
     // this.img.onload = () => {
     this.y += this.dy;
       this.dy = this.dy * 1.07;
@@ -220,7 +220,7 @@ class Bird {
   }
 
   moveUp() {
-    // this.img.src = "images/birdUp.png";
+    // this.img.src = 'images/birdUp.png';
     // this.img.onload = () => {
     this.y -= 30;
     this.dy = 2;
@@ -279,4 +279,4 @@ document.onkeydown = function(event) {
   }
 };
 
-let game = new Game("myCanvas");
+let game = new Game('myCanvas');
