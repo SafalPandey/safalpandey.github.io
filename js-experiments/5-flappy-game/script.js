@@ -1,8 +1,14 @@
-let getRandom = function(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+
+const utils = {
+  getRandom: (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 let wrapper = document.getElementById('wrapper');
+const KEY_CODES = {
+  SPACE: 32
+}
+const CANVAS_WIDTH = 650;
+const CANVAS_HEIGHT = 500;
 
 
 class Game {
@@ -14,7 +20,7 @@ class Game {
     this.bgX = 0;
     this.dxBg = 5;
     this.bgimg = new Image();
-    this.bgimg.style.width = '650px';
+    this.bgimg.style.width = CANVAS_WIDTH+'px';
     this.bgimg.style.height = '500px';
     this.bgimg.src = 'images/background.png';
     // console.log(this.bgimg);
@@ -73,12 +79,8 @@ class Game {
     startButton.style.width = '100px';
 
     startButton.onclick = () => {
-
-
       this.reset();
-
       this.init();
-
     }
 
 
@@ -125,7 +127,7 @@ class Game {
 
     this.drawLoop = setInterval(() => {
       this.draw();
-      if (loopCounter % 50 == 0) {
+      if (loopCounter % 50 === 0) {
 
         let obstacle = new Obstacle(this.ctx, this.dxBg);
         this.obstacles.push(obstacle);
@@ -143,26 +145,27 @@ class Game {
 
   draw() {
     this.drawBackground();
+    this.ctx.fillText(this.score,0,0);
     this.bird.moveDown();
     this.bird.drawBird(this.ctx);
     this.obstacles.forEach((obstacle) => {
       obstacle.updatePosition();
       this.checkCollision(obstacle);
       obstacle.drawObstacle();
-      if(obstacle.x < 125 && !obstacle.isCrossed) {
+      if (obstacle.x < 125 && !obstacle.isCrossed) {
         this.score += 1;
-         obstacle.isCrossed = false;
+        obstacle.isCrossed = false;
       }
-      if (obstacle.x < -70) this.obstacles.splice(this.obstacles.indexOf(obstacle), 1);
     })
+    if (this.obstacles.length > 0 && this.obstacles[0].x < -70) this.obstacles.splice(0, 1);
     // console.log(this.obstacles);
   }
 
   checkCollision(obstacle) {
     if (this.bird.x + this.bird.img.width > obstacle.x && this.bird.y < obstacle.y + 294 && this.bird.x < obstacle.x + 66 || this.bird.x + this.bird.img.width > obstacle.x && this.bird.y + this.bird.img.height > obstacle.y + 416 && this.bird.x < obstacle.x + 66) {
       console.log('over');
-      clearInterval(this.drawLoop);
 
+      clearInterval(this.drawLoop);
       this.over();
     }
   }
@@ -171,7 +174,9 @@ class Game {
     this.bgX -= this.dxBg;
     this.ctx.clearRect(0, 0, this.ctx.canvas.height, this.ctx.canvas.width);
     this.ctx.drawImage(this.bgimg, this.bgX, 0, this.bgimg.width, this.bgimg.height);
+
     if (this.bgX <= 0) this.ctx.drawImage(this.bgimg, this.bgX + this.bgimg.width, 0, this.bgimg.width, this.bgimg.height);
+
     if (this.bgX <= -(this.bgimg.width)) this.bgX = 0;
     // console.log(this.bgimg);
 
@@ -179,19 +184,18 @@ class Game {
   over() {
     this.isStarted = false;
     // console.log();
-    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: '+Math.round(this.score/39);
+    this.gameOver.innerHTML = 'Game Over!<br/>Your Score: ' + Math.round(this.score / 39);
     wrapper.appendChild(this.gameOver)
   }
   reset() {
     this.bird = null;
+
     clearInterval(this.drawLoop);
 
     this.obstacles = [];
     wrapper.children[1] == this.startGameDiv && wrapper.removeChild(this.startGameDiv);
     wrapper.children[1] == this.resetButton && wrapper.removeChild(this.resetButton);
-
     wrapper.children[1] == this.gameOver && wrapper.removeChild(this.gameOver);
-
   }
 }
 
@@ -215,7 +219,7 @@ class Bird {
     // this.img.src = 'images/birdDown.png';
     // this.img.onload = () => {
     this.y += this.dy;
-      this.dy = this.dy * 1.07;
+    this.dy = this.dy * 1.07;
     // }
   }
 
@@ -235,24 +239,19 @@ class Bird {
 
 class Obstacle {
   constructor(ctx, dx) {
-
     this.img = document.createElement('img');
     this.img.src = 'images/obstacle.png';
     this.dx = dx;
     this.ctx = ctx;
     this.isisCrossed = false;
     this.img.onload = () => {
-
-      this.y = getRandom(-180, -10);
-
+      this.y = utils.getRandom(-180, -10);
       this.x = 700;
       this.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
-
     }
-
   }
-  drawObstacle() {
 
+  drawObstacle() {
     this.ctx.drawImage(this.img, this.x, this.y, this.img.width, this.img.height);
   }
 
@@ -262,11 +261,14 @@ class Obstacle {
   }
 }
 
+
+
+
+
 document.onkeydown = function(event) {
   if (game.isStarted) {
     switch (event.keyCode) {
-
-      case 32:
+      case KEY_CODES.SPACE:
         game.drawBackground();
         game.bird.moveUp();
         game.bird.drawBird();
