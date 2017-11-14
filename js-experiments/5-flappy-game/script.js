@@ -137,7 +137,7 @@ class Game {
         this.over();
       }
       loopCounter++;
-    }, 50);
+    }, 25);
 
   }
 
@@ -222,7 +222,7 @@ class Bird {
   moveUp() {
     // this.img.src = "images/birdUp.png";
     // this.img.onload = () => {
-    this.y -= 50;
+    this.y -= 25;
     this.dy = 2;
     // }
   }
